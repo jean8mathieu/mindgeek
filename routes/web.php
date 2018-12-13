@@ -11,6 +11,20 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+
+Route::get('test', 'SchoolboardController@test')->name('test');
+
+Route::group([
+    'prefix' => ''
+], function () {
+    Route::get('/', 'SchoolboardController@getIndex')->name('home');
+
+
+    Route::group([
+        'prefix' => 'view/{schoolboard_id}'
+    ], function () {
+        Route::get('/', 'StudentController@getIndex')->name('student.index');
+        Route::get('{student_id}', 'StudentController@getView')->name('student.view');
+    });
 });
+
