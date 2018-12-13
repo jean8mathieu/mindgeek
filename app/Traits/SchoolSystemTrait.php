@@ -3,6 +3,7 @@
 namespace App\Traits;
 
 use App\Model\Student;
+use Illuminate\Support\Facades\Log;
 use Spatie\ArrayToXml\ArrayToXml;
 
 trait SchoolSystemTrait
@@ -15,7 +16,8 @@ trait SchoolSystemTrait
      */
     public function calculateTheAverage($collection)
     {
-        return $collection->avg();
+        //Round up if the average is decimal
+        return ceil($collection->avg());
     }
 
     /**
@@ -33,22 +35,38 @@ trait SchoolSystemTrait
 
         $date = [];
 
+        //Check if the student pass or fail
         $data['finalResult'] = ($this->getPassOrFail($format, $student) ? "Pass" : "Fail");
 
-        $data['grades'] = $student->grades()->pluck('grade');
+        //Get the student grades
+        $grades = $student->grades()->pluck('grade');
+
+        //Get the student average
+        $data['average'] = $this->calculateTheAverage($grades);
+
+        //Assigning the student data that will be used to generate the JSON or XML
+        $data['grades'] = $grades;
         $data['student']['id'] = $student->id;
         $data['student']['name'] = $student->name;
 
-
+        //Generate the data and echo it on the page
         switch ($format) {
             case "JSON":
-                echo $this->convertToJSON($data);
+                try {
+                    echo $this->convertToJSON($data);
+                } catch (\Exception $e) {
+                    Log::error("There was an issue converting the data to a JSON format");
+                }
                 break;
             case "XML":
-                echo $this->convertToXML($data);
+                try {
+                    echo $this->convertToXML($data);
+                } catch (\Exception $e) {
+                    Log::error("There was an issue converting the data to a XML format");
+                }
                 break;
             default:
-                return "Invalid Export Format";
+                Log::error("Invalid Format");
         }
         //To prevent the code from running further
         die();
@@ -71,14 +89,14 @@ trait SchoolSystemTrait
             $array[$value] = $student[$value];
         }
 
-        $array['id'] = $student['id'];
-        $array['name'] = $student['name'];
+        foreach (['finalResult', 'average'] as $value) {
+            $array[$value] = $data[$value];
+        }
 
         foreach ($data['grades'] as $d) {
             $i++;
-            $array["Grade-{$i}"] = $d;
+            $array["grade-{$i}"] = $d;
         }
-
 
         return ArrayToXml::convert($array);
     }
@@ -115,14 +133,20 @@ trait SchoolSystemTrait
                 return false;
                 break;
             case "XML":
+                //If student have more than 2 grades delete the lowest one
                 if ($student->grades->count() > 2) {
-                    $student->grades()->OrderBy('grade', 'ASC')->first()->delete();
+                    try {
+                        $student->grades()->OrderBy('grade', 'ASC')->first()->delete();
+                    } catch (\Exception $e) {
+                        Log::error("There was an issue while deleting the lowest grade");
+                    }
                 }
 
                 return true;
                 break;
             default:
-                return "Invalid Format for school";
+                Log::error("Invalid Format for school");
         }
+        return false;
     }
 }

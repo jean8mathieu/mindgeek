@@ -26,7 +26,7 @@
 
 @yield('content')
 
-<footer class="footer bg-dark text-white">
+<footer class="footer bg-dark text-white pt-3 pb-2">
     <div class="container">
         <p class="text-center">Copyright © JMDev - {{ date("Y") }}</p>
     </div>
