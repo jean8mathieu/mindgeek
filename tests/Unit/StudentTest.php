@@ -16,6 +16,7 @@ class StudentTest extends TestCase
      */
     public function testStudentPageLoad()
     {
+        //Checking to make sure all student page are viewable
         foreach(Student::all() as $student) {
             $response = $this->get(route('student.view', [
                 'schoolboard_id' => $student->schoolboard_id,

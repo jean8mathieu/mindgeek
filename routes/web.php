@@ -11,9 +11,6 @@
 |
 */
 
-
-Route::get('test', 'SchoolboardController@test')->name('test');
-
 Route::group([
     'prefix' => ''
 ], function () {

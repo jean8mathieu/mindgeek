@@ -18,6 +18,11 @@ class StudentController extends Controller
     {
         $students = Student::query()->where('schoolboard_id', $schoolboard_id)->with(['grades'])->get();
 
+        //If schoolboard isn't valid return 404
+        if (!$students) {
+            return abort(404);
+        }
+
         return view('student.index', ['students' => $students]);
     }
 
