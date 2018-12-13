@@ -5,4 +5,5 @@
  4. Copy `.env.example` to `.env`
  5. `npm run dev` or `npm run production` (Will generate the CSS and JS)
  6. `php artisan migrate:refresh --seed` (Migrate the database and insert data into it)
- 7. Visit the url link to this project
+ 7. `phpunit` will run the test cases
+ 8. Visit the url link to this project
