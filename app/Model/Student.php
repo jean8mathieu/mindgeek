@@ -30,8 +30,23 @@ class Student extends Model
      */
     protected $hidden = ['deleted_at'];
 
+    /**
+     * This function is used to create the relation between the student and the grades
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function grades()
     {
         return $this->hasMany(Grade::class, 'student_id', 'id');
+    }
+
+    /**
+     * This function is used to create the relation between the student and the school board
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function schoolboard()
+    {
+        return $this->hasOne(Schoolboard::class, 'id', 'schoolboard_id');
     }
 }

@@ -25,6 +25,7 @@ Route::group([
     ], function () {
         Route::get('/', 'StudentController@getIndex')->name('student.index');
         Route::get('{student_id}', 'StudentController@getView')->name('student.view');
+        Route::get('{student_id}/generate', 'SchoolboardController@exportStudentInfo')->name('schoolboard.generate');
     });
 });
 

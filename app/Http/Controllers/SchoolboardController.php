@@ -10,26 +10,35 @@ use Illuminate\Http\Request;
 class SchoolboardController extends Controller
 {
     use SchoolSystemTrait;
-    public function getIndex(){
+
+    /**
+     * This function is used to display the table of the schoolboard
+     *
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function getIndex()
+    {
         return view('schoolboard', ['schoolboards' => Schoolboard::all()]);
     }
 
-    public function exportStudentInfo($student_id){
+    /**
+     * This function will initiate the student data export
+     *
+     * @param $schoolboard_id
+     * @param $student_id
+     * @throws \Exception
+     */
+    public function exportStudentInfo($schoolboard_id, $student_id)
+    {
         $student = Student::find($student_id);
 
         //Student not found
-        if(!$student){
+        if (!$student) {
             return abort(404);
         }
 
-        $avg = $this->calculateTheAverage($student->grades->pluck('grade'));
+        $this->generateExport($student->schoolboard()->first()->formatType, $student);
 
-
-    }
-
-    public function test(){
-        $student = Student::find(9);
-        $this->generateExport("XML", $student);
     }
 
 }

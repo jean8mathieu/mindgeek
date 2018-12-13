@@ -30,6 +30,11 @@ class Schoolboard extends Model
      */
     protected $hidden = ['deleted_at'];
 
+    /**
+     * This create the relation from the school bord to the students
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function students()
     {
         return $this->hasMany(Student::class, 'schoolboard_id', 'id');
