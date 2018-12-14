@@ -28,16 +28,14 @@ class SchoolboardController extends Controller
      * @param $student_id
      * @throws \Exception
      */
-    public function exportStudentInfo($schoolboard_id, $student_id)
+    public function exportStudentInfo(Schoolboard $schoolboard, Student $student)
     {
-        $student = Student::find($student_id);
-
         //Student not found
         if (!$student) {
             return abort(404);
         }
 
-        $this->generateExport($student->schoolboard()->first()->formatType, $student);
+        $this->generateExport($schoolboard->formatType, $student);
 
     }
 

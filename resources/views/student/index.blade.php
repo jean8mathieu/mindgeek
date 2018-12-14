@@ -22,7 +22,7 @@
                     <td>{{ $student->id }}</td>
                     <td>{{ $student->name }}</td>
                     <td>{{ $student->grades->count() }}</td>
-                    <td><a href="{{ route('student.view', [request()->route()->parameters['schoolboard_id'], $student->id]) }}" class="btn btn-primary"><i class="far fa-eye"></i></a></td>
+                    <td><a href="{{ route('student.view', [$student->schoolboard ,$student]) }}" class="btn btn-primary"><i class="far fa-eye"></i></a></td>
                 </tr>
             @empty
                 <tr>

@@ -14,9 +14,9 @@ class StudentController extends Controller
      * @param $schoolboard_id
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function getIndex($schoolboard_id)
+    public function getIndex(Schoolboard $schoolboard)
     {
-        $students = Student::query()->where('schoolboard_id', $schoolboard_id)->with(['grades'])->get();
+        $students = Student::query()->where('schoolboard_id', $schoolboard->id)->with(['grades'])->get();
 
         //If schoolboard isn't valid return 404
         if (!$students) {
@@ -29,19 +29,14 @@ class StudentController extends Controller
     /**
      * This function is used to display the individual student information
      *
-     * @param $schoolboard_id
      * @param $student_id
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View|void
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function getView($schoolboard_id, $student_id)
+    public function getView(Schoolboard $schoolboard, Student $student)
     {
-        $student = Student::query()
-            ->where('schoolboard_id', $schoolboard_id)
-            ->where('id', $student_id)
-            ->with('grades');
-
-        if ($student->exists()) {
-            return view('student.view', ['student' => $student->first()]);
+        //Make sure the student is from this schoolboard
+        if ($schoolboard->id === $student->schoolboard_id) {
+            return view('student.view', ['student' => $student]);
         } else {
             return abort(404);
         }

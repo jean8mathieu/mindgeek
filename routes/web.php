@@ -18,11 +18,11 @@ Route::group([
 
 
     Route::group([
-        'prefix' => 'view/{schoolboard_id}'
+        'prefix' => 'view/{schoolboard}'
     ], function () {
         Route::get('/', 'StudentController@getIndex')->name('student.index');
-        Route::get('{student_id}', 'StudentController@getView')->name('student.view');
-        Route::get('{student_id}/generate', 'SchoolboardController@exportStudentInfo')->name('schoolboard.generate');
+        Route::get('{student}', 'StudentController@getView')->name('student.view');
+        Route::get('{student}/generate', 'SchoolboardController@exportStudentInfo')->name('schoolboard.generate');
     });
 });
 

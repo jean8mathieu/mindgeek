@@ -18,7 +18,7 @@
                 <tr>
                     <td>{{ $schoolboard->id }}</td>
                     <td>{{ $schoolboard->name }}</td>
-                    <td><a href="{{ route('student.index', [$schoolboard->id]) }}" class="btn btn-primary"><i class="far fa-eye"></i></a></td>
+                    <td><a href="{{ route('student.index', [$schoolboard]) }}" class="btn btn-primary"><i class="far fa-eye"></i></a></td>
                 </tr>
                 @empty
                 <tr>

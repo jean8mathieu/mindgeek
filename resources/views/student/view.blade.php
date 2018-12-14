@@ -26,7 +26,7 @@
             @endforelse
         </table>
 
-        <a href="{{ route('schoolboard.generate', [$student->schoolboard->id, $student->id]) }}" class="btn btn-success" target="_blank">Generate Report</a>
+        <a href="{{ route('schoolboard.generate', [$student->schoolboard, $student]) }}" class="btn btn-success" target="_blank">Generate Report</a>
         <div class="mb-5"></div>
     </div>
 @endsection
